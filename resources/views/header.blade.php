@@ -16,21 +16,19 @@
               <a class="navbar-brand" href="#">WebSiteName</a>
             </div>
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#">Page 1</a></li>
-              <li><a href="#">Page 2</a></li>
+                <li class="active"><a href="#">Home</a></li>
+              
                 <li>
-                    <a href="#">
-                        <div class="dropdown login">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                Login
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item schoolSignIn" href="#">School Login</a>
-                                <a class="dropdown-item teacherSignIn" href="#">Teacher Login</a>
-                            </div>
-                        </div>
-                    </a>
+                    <a href="{{ url('/login') }}"><div class="btn btn-primary">
+                        Login
+                    </div></a>
+                </li>
+                <li>
+                    
+                    <a href="{{ url('/register') }}"><div class="btn btn-primary">
+                        Register
+                    </div></a>
+                        
                 </li>
             </ul>
           </div>

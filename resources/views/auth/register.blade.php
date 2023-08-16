@@ -73,7 +73,7 @@
                                                 <select type="text" class="form-control" name="role" id="role" required="required" />
                                                     <option value="">Select</option>
                                                     <option value="manager">Manager</option>
-                                                    <option value="employee">Employee</option>
+                                                    <option value="employee">Team Member</option>
                                                 </select>
                                                 
                                             </div>
@@ -111,7 +111,27 @@
                                     </div>
 
                                     <div class="row" style="margin-bottom:20px;">
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="input" class="control-label">Reporting To</label><i class="bar"></i>
+                                                
+                                                <select type="text" class="form-control" name="report_to" id="report_to" />
+                                                    <option value="">Select</option>
+                                                    <?php
+                                                    if(count($managers) > 0)
+                                                    {
+                                                        foreach($managers as $manager)
+                                                        {
+                                                            //print_r($manager);die;
+
+                                                            echo "<option value='".$manager->id."'>".$manager->fname." ".$manager->lname."</option>";
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
                                             <div class="form-radio" style="margin-bottom:0px;">
                                                 <div><label for="input" class="control-label">Gender</label><i
                                                     class="bar"></i><br>

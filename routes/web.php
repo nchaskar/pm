@@ -16,21 +16,50 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::group(['middleware'=>'XSS'], function() {
 
-Route::get('/logout', [LoginController::class, 'logout']);
+    Route::get('/', function () {
+        return view('home');
+    });
 
-Route::namespace ('Auth')->group(function () {
-    Route::get('/register', [RegisterController::class, 'showRegisterForm']);
-    Route::post('/register', [RegisterController::class, 'createUser']);
-    Route::get('login', [LoginController::class, 'showLoginForm'])->name('login.get');
-    Route::post('login', [LoginController::class, 'submitLoginForm'])->name('login.post');
-    Route::post('chkemailexists', [RegisterController::class, 'chkemailExists']);
-    
-});
+    Route::get('/logout', [LoginController::class, 'logout']);
 
-Route::group(['middleware' => ['Manager']], function () {
-   Route::get('/manager/dashboard', [DashboardController::class, 'managerDashboard']);
+    Route::namespace ('Auth')->group(function () {
+        Route::get('/register', [RegisterController::class, 'showRegisterForm']);
+        Route::post('/register', [RegisterController::class, 'createUser']);
+        Route::get('login', [LoginController::class, 'showLoginForm'])->name('login.get');
+        Route::post('login', [LoginController::class, 'submitLoginForm'])->name('login.post');
+        Route::post('chkemailexists', [RegisterController::class, 'chkemailExists']);  
+    });
+
+    Route::group(['middleware' => ['Manager']], function () {
+       Route::get('/manager/dashboard', [DashboardController::class, 'managerDashboard']);
+       Route::get('/manager/getProjects/', [DashboardController::class, 'getProjects']);
+       Route::get('/manager/project/show', [DashboardController::class, 'showProjects']);
+       Route::get('/manager/project/create', [DashboardController::class, 'createProject']);
+       Route::post('/manager/project/create', [DashboardController::class, 'createProject']);
+
+       Route::get('/manager/showTeamMembers/{id}', [DashboardController::class, 'showTeamMembers']);
+       Route::post('/manager/addTeamMembers/', [DashboardController::class, 'addTeamMembers']);
+       Route::get('/manager/removeTeamMember/{pid}/{uid}', [DashboardController::class, 'removeTeamMembers']);
+
+       Route::get('/manager/getTasks/', [DashboardController::class, 'getTasks']);
+       Route::get('/manager/tasks/show', [DashboardController::class, 'showTasks']);
+       Route::get('/manager/tasks/create', [DashboardController::class, 'createTask']);
+       Route::post('/manager/tasks/create', [DashboardController::class, 'createTask']);
+
+       Route::get('/manager/getMembers/', [DashboardController::class, 'getMembers']);
+       Route::get('/manager/getProjects/', [DashboardController::class, 'getProjects']);
+       
+    });
+
+    Route::group(['middleware' => ['TeamMember']], function () {
+       Route::get('/employee/dashboard', [DashboardController::class, 'employeeDashboard']);
+       Route::get('/employee/getTasks/', [DashboardController::class, 'getEmpTasks']);
+       Route::get('/employee/getTasks/{id}', [DashboardController::class, 'getEmpTasks']);
+       Route::get('/employee/getProjects/', [DashboardController::class, 'getEmpProjects']);
+       Route::get('/employee/tasks/show', [DashboardController::class, 'showEmpTasks']);
+
+       Route::post('/employee/task/update', [DashboardController::class, 'updateEmpTask']);
+    });
 });

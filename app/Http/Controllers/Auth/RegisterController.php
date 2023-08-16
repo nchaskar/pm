@@ -65,7 +65,10 @@ class RegisterController extends Controller
      */
     public function showRegisterForm()
     {
-        return view('auth.register', ['url' => 'manager']);
+        $managers = DB::table('users')->select('id','fname','lname','email')->where('role','manager')->get();
+
+        //  print_r($managers);die;
+        return view('auth.register', ['managers' => $managers]);
     }
 
     protected function create(array $data)
@@ -79,15 +82,6 @@ class RegisterController extends Controller
 
     protected function createUser(Request $request)
     {
-        //echo '<pre>';print_r($request->all());die;
-        /*
-        return Validator::make([
-            'fname' => 'required|string|max:255',
-            'lname' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-        */
 
         $request->validate([
             'first_name' => 'required|string|max:255',
@@ -103,6 +97,7 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
             'role'=> $request->role,
             'gender'=>$request->gender,
+            'report_to'=>$request->report_to,
         ]);
 
         return redirect()->intended('login');
